@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {AgendaPart, AgendaScheduleProps, FullTimeBlock, TimeBlock, TimeBullet} from '@proto/agenda';
 import {TimeUnit} from '@proto/timeUnit';
@@ -142,7 +142,7 @@ function generateAgendaBlock(block: FullTimeBlock, estimateTime: number): [TimeB
       })
       estimateTime -= scheduleTime;
     }
-    console.log(bullet.name, estimateTime);
+    // log(bullet.name, estimateTime);
     return estimateTime;
   }
 
@@ -190,11 +190,10 @@ function generatePreviewBlock(block: FullTimeBlock): TimeBlock {
 
 function generateAgendaPart(part: AgendaPart, restTime: number, blocks: WithAgendaScheduleProps<FullTimeBlock>[]): AgendaPart {
   const scheduler = new AgendaScheduler(restTime);
-  console.log(restTime, blocks);
   for (const block of blocks) {
     const scheduleTime = scheduler.schedule(block, scheduler.leftTime);
     if (scheduleTime) {
-      console.log(block.value.name, scheduleTime);
+      // log(block.value.name, scheduleTime);
       const [g, rest] = generateAgendaBlock(block.value, scheduleTime);
       part.blocks.push(g);
       if (rest > 0) {
@@ -217,7 +216,7 @@ function generateAgenda(task: ({
   const scheduler = new AgendaScheduler(estimated || TimeUnit.Day);
   for (const taskPart of task) {
     let scheduleTime = scheduler.schedule(taskPart, taskPart.part.end - taskPart.part.start);
-    console.log(taskPart.part.name, scheduleTime);
+    // log(taskPart.part.name, scheduleTime);
     if (scheduleTime) {
       parts.push(generateAgendaPart(taskPart.part, scheduleTime, taskPart.blocks));
     }
@@ -247,13 +246,57 @@ function splitCharger(tb: FullTimeBlock, parts: string[], commonParts?: string[]
 const [researchAM, researchPMFull] = splitCharger(research, ['网络调研'], ['论文阅读']);
 const [researchPM, researchFull] = splitCharger(researchPMFull, ['论文阅读', '代码']);
 
+interface FlattenBullet {
+  block: TimeBlock;
+  bullet: TimeBullet;
+}
+
+interface FlattenAgendaPart {
+  part: AgendaPart;
+  bullets: FlattenBullet[];
+}
+
+function flattenPart(parts: AgendaPart[]): FlattenAgendaPart[] {
+  const bullets: FlattenAgendaPart[] = [];
+  for (const part of parts) {
+    for (const block of part.blocks) {
+      const newPart: FlattenAgendaPart = {
+        part,
+        bullets: [],
+      };
+      bullets.push(newPart);
+      for (const bullet of block.charger) {
+        newPart.bullets.push({
+          block,
+          bullet,
+        });
+      }
+    }
+  }
+  return bullets;
+}
+
+function flattenBlock(blocks: TimeBlock[]): FlattenBullet[] {
+  const bullets: FlattenBullet[] = [];
+  for (const block of blocks) {
+    for (const bullet of block.charger) {
+      bullets.push({
+        block,
+        bullet,
+      });
+    }
+  }
+  return bullets;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   title = 'todo';
+  editing = false;
   todoBlocks: AgendaPart[] = generateAgenda([
     {
       part: {
@@ -291,11 +334,18 @@ export class HomeComponent {
       ]
     }
   ], 12 * TimeUnit.Hour);
-  done: TimeBlock[] = [
+  doneBlocks: TimeBlock[] = [
     generatePreviewBlock(research),
     generatePreviewBlock(study),
     generatePreviewBlock(entertainment),
   ];
+  flattenTodo: FlattenAgendaPart[] = [];
+  flattenDone: FlattenBullet[] = [];
+
+  ngOnInit(): void {
+    this.flattenTodo = flattenPart(this.todoBlocks);
+    this.flattenDone = flattenBlock(this.doneBlocks);
+  }
 
   dayDur(dur: number): string {
     const hh = Math.floor(dur / TimeUnit.Hour);
@@ -303,7 +353,7 @@ export class HomeComponent {
     return `${hh.toString().padStart(2, '0')}:${mm.toString().padStart(2, '0')}`;
   }
 
-  drop(event: CdkDragDrop<TimeBlock[]>) {
+  drop(event: CdkDragDrop<FlattenBullet[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

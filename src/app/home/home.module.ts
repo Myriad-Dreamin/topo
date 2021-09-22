@@ -6,12 +6,14 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeRoutingModule} from './home-routing.module';
 import {AgendaTimeBlockComponent} from './agenda-time-block/agenda-time-block.component';
+import {AgendaEditBlockComponent} from './agenda-edit-block/agenda-edit-block.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    AgendaTimeBlockComponent
+    AgendaTimeBlockComponent,
+    AgendaEditBlockComponent
   ],
   imports: [
     CommonModule,
