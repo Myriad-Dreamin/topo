@@ -1,0 +1,34 @@
+<div cdkDropListGroup fxLayout="row">
+  <div class="example-container" fxFlex="70">
+    <h2>Agenda</h2>
+    <div fxLayout="column">
+      <div *ngFor="let block of todoBlocks" class="agenda-group-container" fxFlex>
+        <div class="agenda-group-header">
+          {{block.name}} ({{dayDur(block.start)}}-{{dayDur(block.end)}})
+        </div>
+        <div
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="block.blocks"
+          cdkDropList
+          class="example-list">
+          <agenda-time-block *ngFor="let item of block.blocks" [item]="item" cdkDrag class="example-box">
+          </agenda-time-block>
+        </div>
+        <!--          [cdkDropListConnectedTo]="[doneList]"-->
+        <!--      [cdkDropListConnectedTo]="[todoList]"-->
+      </div>
+    </div>
+  </div>
+  <div class="example-container" fxFlex="30">
+    <h2>Time Block</h2>
+    <div
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="done"
+      cdkDropList
+      class="example-list">
+      <agenda-time-block *ngFor="let item of done" [item]="item" cdkDrag class="example-box">
+      </agenda-time-block>
+    </div>
+  </div>
+
+</div>

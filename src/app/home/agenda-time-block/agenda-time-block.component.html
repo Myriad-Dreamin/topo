@@ -1,0 +1,12 @@
+<div style="width: 100%">
+  <div>
+    {{item.name}}
+  </div>
+  <div>
+    <div *ngFor="let bullet of item.charger">
+      <div class="bullet-left">{{bullet.name}}</div>
+      <div class="bullet-right">{{durHuman(bullet.estimated)}}</div>
+      <div style="clear: both"></div>
+    </div>
+  </div>
+</div>
