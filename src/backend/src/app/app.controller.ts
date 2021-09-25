@@ -5,7 +5,7 @@ import {TopoAppConfigService} from './core/app.config.service';
 import {TopoNode} from '@proto/agenda';
 import {TopoAgendaAlgorithmService} from './core/agenda.algorithm.service';
 
-interface TodoAppPingResponse {
+interface TopoAppPingResponse {
   version: string;
 }
 
@@ -22,7 +22,7 @@ export class TopoAppController {
   }
 
   @Get('ping')
-  ping(): TopoAppGenericData<TodoAppPingResponse> {
+  ping(): TopoAppGenericData<TopoAppPingResponse> {
     return {
       code: 0,
       data: {
