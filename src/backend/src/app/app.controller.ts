@@ -1,8 +1,5 @@
 import {Controller, Get, Inject, Query} from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
-import {homedir} from 'os';
-import {TopoAppBackendError, TopoAppGenericData} from '@proto/backend';
+import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams, TopoUserConfig} from '@proto/backend.algorithm';
 import {TopoAppConfigService} from './core/app.config.service';
 import {AgendaPart} from '@proto/agenda';
@@ -36,22 +33,15 @@ export class TopoAppController {
 
   @Get('v1/app/config')
   getConfig(): TopoAppGenericData<TopoUserConfig> {
-    const configPath = path.resolve(homedir(), '.config/topo/config.yaml');
-    const configDir = path.dirname(configPath);
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir);
-      throw new TopoAppBackendError(1, 'config not exists');
-    }
-
     return {
       code: 0,
-      data: this.configService.getUserConfig(),
+      data: this.configService.getUserTopoConfig(),
     }
   }
 
   @Get('v1/app/params')
   getParams(): TopoAppGenericData<TopoAlgorithmParams> {
-    const config = this.configService.getUserConfig();
+    const config = this.configService.getUserTopoConfig();
 
     return {
       code: 0,
@@ -61,7 +51,7 @@ export class TopoAppController {
 
   @Get('v1/app/topo')
   getAgenda(@Query() params: GenerateAgendaRequest): TopoAppGenericData<AgendaPart[]> {
-    const config = this.configService.getUserConfig();
+    const config = this.configService.getUserTopoConfig();
 
     return {
       code: 0,

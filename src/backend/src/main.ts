@@ -3,6 +3,7 @@ import {Logger as NestPinoLogger} from 'nestjs-pino';
 import {TopoAppBackendModule} from './app/app.module';
 import {ArgumentsHost, Catch, ExceptionFilter} from '@nestjs/common';
 import {TopoAppBackendError, TopoBackendErrno} from '@proto/backend';
+import {TopoReporterService} from './app/core/reporter.service';
 
 const errnoMap = new Map<number, string>(Object.keys(TopoBackendErrno).map(k => [TopoBackendErrno[k as unknown as number] as unknown as number, k]));
 
@@ -39,6 +40,21 @@ async function main() {
   });
   application.useLogger(application.get(NestPinoLogger));
   application.useGlobalFilters(new GenericErrorFilter());
+
+  const reporter = await application.resolve(TopoReporterService);
+
+  let exited = false;
+  process.on('exit', () => {
+    exited = true;
+  });
+  (async () => {
+    for (; ;) {
+      if (exited) {
+        return;
+      }
+      await reporter.report(() => exited);
+    }
+  })().catch(console.error);
 
   await application.listen(13308);
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AgendaPart, TimeBlock} from '@proto/agenda';
-import {TimeUnit} from '@proto/timeUnit';
 import {HttpClient} from '@angular/common/http';
 import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams} from '@proto/backend.algorithm';
+import {convertDailyDurationToHM} from '../../lib/duration';
 
 @Component({
   selector: 'app-home',
@@ -36,9 +36,5 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  dayDur(dur: number): string {
-    const hh = Math.floor(dur / TimeUnit.Hour);
-    const mm = Math.round((dur - hh * TimeUnit.Hour) / TimeUnit.Minute);
-    return `${hh.toString().padStart(2, '0')}:${mm.toString().padStart(2, '0')}`;
-  }
+  dayDur = convertDailyDurationToHM;
 }

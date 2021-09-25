@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
 import {TimeUnit} from '@proto/timeUnit';
 import {TopoAlgorithmParams, TopoUserConfig} from '@proto/backend.algorithm';
 import * as path from 'path';
 import {homedir} from 'os';
 import * as fs from 'fs';
 import {TopoAppBackendError} from '@proto/backend';
+import {Injectable} from '@nestjs/common';
 
 const units = new Map<string, number>();
 units.set('h', TimeUnit.Hour);
@@ -76,11 +76,12 @@ export class TopoAppConfigService {
   configPath: string;
 
   constructor() {
-    this.configPath = path.resolve(homedir(), '.config/topo/config.yaml');
+    this.configPath = path.resolve(homedir(), '.config/topo/topo.yaml');
   }
 
-  getUserConfig(): TopoUserConfig {
+  getUserTopoConfig(): TopoUserConfig {
     const configPath = this.configPath;
+
     const hd = homedir();
     if (!configPath.startsWith(hd)) {
       throw new TopoAppBackendError(2, 'configPath is not under user home path');
@@ -89,6 +90,10 @@ export class TopoAppConfigService {
     const configDir = path.dirname(configPath);
     if (!fs.existsSync(configDir)) {
       fs.mkdirSync(configDir);
+    }
+
+    if (!fs.existsSync(configPath)) {
+      fs.mkdirSync(configPath);
       throw new TopoAppBackendError(1, 'config not exists');
     }
 

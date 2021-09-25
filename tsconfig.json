@@ -6,6 +6,9 @@
     "paths": {
       "@proto/*": [
         "src/proto/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
       ]
     },
     "outDir": "./dist/out-tsc",
