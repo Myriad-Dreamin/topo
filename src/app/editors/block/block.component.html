@@ -1,0 +1,46 @@
+<div id="edit-graph"></div>
+<!--  <div cdkDropListGroup fxLayout="row">-->
+<!--    <div class="example-container" fxFlex="70">-->
+<!--      <div style="height: 80px">-->
+<!--        <h2 style="float: left; margin: 0; padding: 20px 0">Agenda</h2>-->
+<!--        <div fxLayout="row" fxLayoutAlign="end center" style="float: right; height: 100%">-->
+<!--          <a (click)="switchEdit()" fxFlex>Edit</a>-->
+<!--        </div>-->
+<!--        <div style="clear: both;"></div>-->
+<!--      </div>-->
+<!--      <div fxLayout="column">-->
+<!--        <div *ngFor="let block of flattenTodo" class="agenda-group-container" fxFlex>-->
+<!--          <div class="agenda-group-header">-->
+<!--            {{block.part.name}} ({{dayDur(block.part.start)}}-{{dayDur(block.part.end)}})-->
+<!--          </div>-->
+<!--          <div-->
+<!--            (cdkDropListDropped)="drop($event)"-->
+<!--            [cdkDropListData]="block.bullets"-->
+<!--            cdkDropList-->
+<!--            class="example-list">-->
+<!--            <agenda-edit-block *ngFor="let bullet of block.bullets" [bullet]="bullet.bullet" [item]="bullet.block"-->
+<!--                               cdkDrag class="example-box">-->
+<!--            </agenda-edit-block>-->
+<!--          </div>-->
+<!--          &lt;!&ndash;          [cdkDropListConnectedTo]="[doneList]"&ndash;&gt;-->
+<!--          &lt;!&ndash;      [cdkDropListConnectedTo]="[todoList]"&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="example-container" fxFlex="30">-->
+<!--      <div style="height: 80px">-->
+<!--        <h2 style="margin: 0; padding: 20px 0">Time Block</h2>-->
+<!--      </div>-->
+<!--      <div-->
+<!--        (cdkDropListDropped)="drop($event)"-->
+<!--        [cdkDropListData]="flattenDone"-->
+<!--        cdkDropList-->
+<!--        class="example-list">-->
+<!--        <ng-container *ngFor="let item of doneBlocks">-->
+<!--          <agenda-edit-block *ngFor="let bullet of flattenDone" [bullet]="bullet.bullet" [item]="bullet.block" cdkDrag-->
+<!--                             class="example-box">-->
+<!--          </agenda-edit-block>-->
+<!--        </ng-container>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->

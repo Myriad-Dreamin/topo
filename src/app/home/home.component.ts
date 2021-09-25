@@ -471,7 +471,6 @@ function convertConfig(conf: TopoConfig): TopoAlgorithmParams {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   title = 'todo';
-  editing = true;
   todoBlocks: AgendaPart[] = [];
   doneBlocks: TimeBlock[] = [];
   flattenTodo: FlattenAgendaPart[] = [];
@@ -548,9 +547,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initGraphView();
     this.resetData();
-    setTimeout(() => {
-      this.switchEdit();
-    }, 0);
   }
 
   resetData() {
@@ -690,11 +686,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  switchEdit(): void {
-    this.editing = !this.editing;
-    if (this.editing) {
-      this.initGraphView();
-      this.resetData();
-    }
-  }
 }
