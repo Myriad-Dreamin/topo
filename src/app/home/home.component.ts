@@ -5,6 +5,7 @@ import {TimeUnit} from '@proto/timeUnit';
 import {BezierEdge, BezierEdgeModel, h, LogicFlow, RectNode, RectNodeModel} from '@logicflow/core';
 import {HttpClient} from '@angular/common/http';
 import {TopoAppGenericData} from '@proto/backend';
+import {TopoAlgorithmParams} from '@proto/backend.algorithm';
 
 
 class FlowEdge extends BezierEdge {
@@ -305,57 +306,6 @@ function generateAgenda(params: TopoAlgorithmParams): AgendaPart[] {
   return parts;
 }
 
-type TopoDurationConfig = string | number;
-
-interface TopoConfig {
-  intervals: (Omit<AgendaPart, 'estimated' | 'start' | 'end'> & {
-    estimated: TopoDurationConfig;
-    start: TopoDurationConfig;
-    end: TopoDurationConfig;
-  })[];
-  blocks: (Omit<FullTimeBlock, 'estimated' | 'maxTime' | 'charger'> & {
-    estimated: TopoDurationConfig;
-    maxTime: TopoDurationConfig;
-    charger: (Omit<FullTimeBlock['charger'][number], 'estimated' | 'maxTime'> & {
-      estimated: TopoDurationConfig;
-      maxTime: TopoDurationConfig;
-    })[]
-  })[];
-  topology: {
-    workTime: TopoDurationConfig;
-    defaultIntervalId: number;
-    bulletForbidden: {
-      blockId: number;
-      bulletName: string;
-    }[];
-    blockAffinity: {
-      intervalId: number;
-      blockId: number;
-      bulletName?: string;
-      weight?: number;
-    }[];
-  };
-}
-
-interface TopoAlgorithmParams {
-  intervals: AgendaPart[];
-  blocks: FullTimeBlock[];
-  topology: {
-    workTime: number;
-    defaultIntervalId: number;
-    bulletForbidden: {
-      blockId: number;
-      bulletName: string;
-    }[];
-    blockAffinity: {
-      intervalId: number;
-      blockId: number;
-      bulletName?: string;
-      weight?: number;
-    }[];
-  },
-}
-
 const algorithms = new Map<string, (topo: TopoAlgorithmParams) => (AgendaPart[])>();
 algorithms.set('default', generateAgenda);
 
@@ -402,67 +352,6 @@ function flattenBlock(blocks: TimeBlock[]): FlattenBullet[] {
   return bullets;
 }
 
-const units = new Map<string, number>();
-units.set('h', TimeUnit.Hour);
-units.set('mi', TimeUnit.Minute);
-units.set('s', TimeUnit.Second);
-units.set('ms', TimeUnit.Millisecond);
-units.set('d', TimeUnit.Day);
-
-function convertDurationString(str: string | number): number {
-  if (typeof str !== 'string') {
-    return str;
-  }
-
-  const xxx = /([\d.]+)(\w+)/g;
-  let ea: RegExpExecArray | null;
-  let sumDuration = 0;
-  while ((ea = xxx.exec(str))) {
-    const b = Number.parseInt(ea[1]);
-    const u = units.get(ea[2]) || 1;
-    sumDuration += b * u;
-  }
-  return sumDuration;
-}
-
-function convertConfig(conf: TopoConfig): TopoAlgorithmParams {
-  for (const block of conf.blocks) {
-    if (typeof block.estimated === 'string') {
-      block.estimated = convertDurationString(block.estimated);
-    }
-    for (const bullet of block.charger) {
-      if (typeof bullet.estimated === 'string') {
-        bullet.estimated = convertDurationString(bullet.estimated);
-      }
-      if (typeof bullet.maxTime === 'string') {
-        bullet.maxTime = convertDurationString(bullet.maxTime);
-      }
-    }
-  }
-  for (const interval of conf.intervals) {
-    if (typeof interval.estimated === 'string') {
-      interval.estimated = convertDurationString(interval.estimated);
-    }
-    if (typeof interval.start === 'string') {
-      interval.start = convertDurationString(interval.start);
-    }
-    if (typeof interval.end === 'string') {
-      interval.end = convertDurationString(interval.end);
-    }
-  }
-
-  if (conf.topology.workTime) {
-    let wt = conf.topology.workTime;
-    if (typeof wt === 'string') {
-      wt = convertDurationString(conf.topology.workTime);
-    }
-    conf.topology.workTime = wt;
-  } else {
-    conf.topology.workTime = 18 * TimeUnit.Hour;
-  }
-
-  return conf as TopoAlgorithmParams;
-}
 
 @Component({
   selector: 'app-home',
@@ -492,11 +381,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.flattenTodo = flattenPart(this.todoBlocks);
     this.flattenDone = flattenBlock(this.doneBlocks);
-    this.httpClient.get<TopoAppGenericData<TopoConfig>>('http://localhost:13308/v1/app/full').subscribe((res) => {
+    this.httpClient.get<TopoAppGenericData<TopoAlgorithmParams>>('http://localhost:13308/v1/app/params').subscribe((res) => {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {
-        const params = convertConfig(res.data);
+        const params = res.data;
 
         for (const block of params.blocks) {
           this.doneBlocks.push(generatePreviewBlock(block));
@@ -545,8 +434,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.initGraphView();
-    this.resetData();
+    // this.initGraphView();
+    // this.resetData();
   }
 
   resetData() {
