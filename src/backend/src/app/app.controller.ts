@@ -1,18 +1,27 @@
-import {Controller, Get} from '@nestjs/common';
+import {Controller, Get, Inject, Query} from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import {homedir} from 'os';
 import {TopoAppBackendError, TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams, TopoUserConfig} from '@proto/backend.algorithm';
 import {TopoAppConfigService} from './core/app.config.service';
+import {AgendaPart} from '@proto/agenda';
+import {TopoAgendaAlgorithmService} from './core/agenda.algorithm.service';
 
 interface TodoAppPingResponse {
   version: string;
 }
 
+interface GenerateAgendaRequest {
+  dry: boolean;
+  refresh: boolean;
+}
+
 @Controller()
 export class TopoAppController {
-  constructor(protected configService: TopoAppConfigService) {
+  constructor(
+    @Inject(TopoAppConfigService) protected configService: TopoAppConfigService,
+    @Inject(TopoAgendaAlgorithmService) protected algorithmService: TopoAgendaAlgorithmService) {
   }
 
   @Get('ping')
@@ -50,13 +59,13 @@ export class TopoAppController {
     }
   }
 
-  @Get('v1/app/agenda')
-  getAgenda(): TopoAppGenericData<TopoAlgorithmParams> {
+  @Get('v1/app/topo')
+  getAgenda(@Query() params: GenerateAgendaRequest): TopoAppGenericData<AgendaPart[]> {
     const config = this.configService.getUserConfig();
 
     return {
       code: 0,
-      data: this.configService.config2Params(config),
+      data: this.algorithmService.applyAlgorithm(this.configService.config2Params(config)),
     }
   }
 }
