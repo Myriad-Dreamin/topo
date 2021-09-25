@@ -34,86 +34,6 @@ class BulletNodeModel extends RectNodeModel {
   }
 }
 
-// const research: FullTimeBlock = {
-//   id: 1,
-//   name: '科研',
-//   estimated: 0,
-//   charger: [
-//     {
-//       name: '网络调研',
-//       estimated: 30 * TimeUnit.Day,
-//     },
-//     {
-//       name: '论文阅读',
-//       estimated: 30 * TimeUnit.Day,
-//       percent: 10,
-//     },
-//     {
-//       name: '代码',
-//       estimated: 30 * TimeUnit.Day,
-//       percent: 30,
-//     },
-//     {
-//       name: '实验',
-//       estimated: 30 * TimeUnit.Day,
-//     },
-//     {
-//       name: '写作',
-//       estimated: 30 * TimeUnit.Day,
-//     },
-//     {
-//       name: '摸鱼',
-//       estimated: 1 * TimeUnit.Day,
-//       percent: 30,
-//     },
-//   ],
-// };
-//
-// const study: FullTimeBlock = {
-//   id: 2,
-//   name: '学习',
-//   estimated: 0,
-//   charger: [
-//     {
-//       name: '写作',
-//       estimated: 0,
-//       maxTime: 1 * TimeUnit.Hour,
-//     },
-//     {
-//       name: '英语',
-//       estimated: 0,
-//       maxTime: 1 * TimeUnit.Hour,
-//     },
-//     {
-//       name: '音乐',
-//       estimated: 0,
-//     },
-//   ],
-// };
-//
-// const entertainment: FullTimeBlock = {
-//   id: 2,
-//   name: '摸',
-//   estimated: 0,
-//   charger: [
-//     {
-//       name: '摸鱼',
-//       estimated: 0,
-//       maxTime: 1 * TimeUnit.Hour,
-//     },
-//     {
-//       name: '听音乐',
-//       estimated: 0,
-//       maxTime: 1 * TimeUnit.Hour,
-//     },
-//     {
-//       name: '看小说',
-//       estimated: 0,
-//       maxTime: 1 * TimeUnit.Hour,
-//     },
-//   ],
-// };
-
 type WithAgendaScheduleProps<T> = {
   value: T;
 } & AgendaScheduleProps;
@@ -439,25 +359,6 @@ interface TopoAlgorithmParams {
 const algorithms = new Map<string, (topo: TopoAlgorithmParams) => (AgendaPart[])>();
 algorithms.set('default', generateAgenda);
 
-function splitCharger(tb: FullTimeBlock, parts: string[], commonParts?: string[]): [FullTimeBlock, FullTimeBlock] {
-  commonParts = commonParts || [];
-  const left: FullTimeBlock = {...tb, charger: []}, right: FullTimeBlock = {...tb, charger: []};
-  for (const bullet of tb.charger) {
-    if (parts.includes(bullet.name)) {
-      left.charger.push(bullet);
-    } else if (commonParts.includes(bullet.name)) {
-      left.charger.push(bullet);
-      right.charger.push(bullet);
-    } else {
-      right.charger.push(bullet);
-    }
-  }
-  return [left, right];
-}
-
-// const [researchAM, researchPMFull] = splitCharger(research, ['网络调研'], ['论文阅读']);
-// const [researchPM, researchFull] = splitCharger(researchPMFull, ['论文阅读', '代码']);
-
 interface FlattenBullet {
   block: TimeBlock;
   bullet: TimeBullet;
@@ -500,50 +401,6 @@ function flattenBlock(blocks: TimeBlock[]): FlattenBullet[] {
   }
   return bullets;
 }
-
-// const task = [
-//   {
-//     part: {
-//       name: '上午',
-//       start: 9 * TimeUnit.Hour,
-//       end: 11.5 * TimeUnit.Hour,
-//       blocks: [],
-//     },
-//     blocks: [
-//       {value: researchAM},
-//     ]
-//   },
-//   {
-//     part: {
-//       name: '下午',
-//       start: 13.5 * TimeUnit.Hour,
-//       end: 18 * TimeUnit.Hour,
-//       blocks: [],
-//     },
-//     blocks: [
-//       {value: researchPM},
-//     ]
-//   },
-//   {
-//     part: {
-//       name: '全日 (晚上)',
-//       start: 9 * TimeUnit.Hour,
-//       end: 21 * TimeUnit.Hour,
-//       blocks: [],
-//     },
-//     blocks: [
-//       {value: researchFull, percent: 30},
-//       {value: study, percent: 30},
-//       {value: entertainment},
-//     ]
-//   }
-// ];
-//
-// const blockRaws = [
-//   research,
-//   study,
-//   entertainment,
-// ]
 
 const units = new Map<string, number>();
 units.set('h', TimeUnit.Hour);
@@ -809,11 +666,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       ],
       edges: [
         ...blockBulletEdges,
-        // {
-        //   type: 'flow-edge',
-        //   sourceNodeId: 500,
-        //   targetNodeId: 521,
-        // }
       ]
     };
 
