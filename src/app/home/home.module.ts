@@ -7,19 +7,21 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeRoutingModule} from './home-routing.module';
 import {AgendaTimeBlockComponent} from './agenda-time-block/agenda-time-block.component';
 import {AgendaEditBlockComponent} from './agenda-edit-block/agenda-edit-block.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     AgendaTimeBlockComponent,
-    AgendaEditBlockComponent
+    AgendaEditBlockComponent,
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
     DragDropModule,
     FlexLayoutModule,
+    HttpClientModule,
   ],
   providers: [
     HomeService,

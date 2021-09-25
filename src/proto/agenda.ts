@@ -22,6 +22,7 @@ export interface TimeBlock {
 }
 
 export interface AgendaPart {
+  id?: number;
   name: string;
   start: number;
   end: number;

@@ -1211,6 +1211,15 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
 
+"@logicflow/core@^0.6.16":
+  version "0.6.16"
+  resolved "https://registry.yarnpkg.com/@logicflow/core/-/core-0.6.16.tgz#1a64a573b2ee826578bbea12fa330d990dbc1e08"
+  integrity sha512-EovlzSmmO63bJnXv0P/wIlVAAUewDSh/pDFCzyiBvqvf67L6ZB6IBZ4Ksq9TJMAazTdoVqVQbwmp5Ni/pawXgg==
+  dependencies:
+    "@types/mousetrap" "^1.6.4"
+    mousetrap "^1.6.5"
+    preact "^10.4.8"
+
 "@ngtools/webpack@12.1.4":
   version "12.1.4"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-12.1.4.tgz#9f7ac5e26b366831b50558bf71dd6e1689743def"
@@ -1367,6 +1376,13 @@
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.11.tgz#4b1d77aa9dfc757407cb9e277216d8e83553f09d"
   integrity sha512-S6pvzQDvMZHrkBz2Mcn/8Du7cpr76PlRJBAoHnSDNbulULsH5dp0Gns+WRyNX5LHejz/ljxK4/vIHK/caHt6SQ==
 
+"@types/jquery@^3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.6.tgz#97ac8e36dccd8ad8ed3f3f3b48933614d9fd8cf0"
+  integrity sha512-SmgCQRzGPId4MZQKDj9Hqc6kSXFNWZFHpELkyK8AQhf8Zr6HKfCzFv9ZC1Fv3FyQttJZOlap3qYb12h61iZAIg==
+  dependencies:
+    "@types/sizzle" "*"
+
 "@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8":
   version "7.0.9"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
@@ -1376,6 +1392,11 @@
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.5.tgz#1001cc5e6a3704b83c236027e77f2f58ea010f40"
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
+
+"@types/mousetrap@^1.6.4":
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.8.tgz#448929e6dc21126392830465fdb9d4a2cfc16a88"
+  integrity sha512-zTqjvgCUT5EoXqbqmd8iJMb4NJqyV/V7pK7AIKq7qcaAsJIpGlTVJS1HQM6YkdHCdnkNSbhcQI7MXYxFfE3iCA==
 
 "@types/node@*", "@types/node@>=10.0.0":
   version "16.9.6"
@@ -1391,6 +1412,11 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/sizzle@*":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
+  integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
 "@types/source-list-map@*":
   version "0.1.2"
@@ -4950,6 +4976,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4, mkdirp@~1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+mousetrap@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/mousetrap/-/mousetrap-1.6.5.tgz#8a766d8c272b08393d5f56074e0b5ec183485bf9"
+  integrity sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -6156,6 +6187,11 @@ postcss@^8.2.15, postcss@^8.2.9:
     nanocolors "^0.1.5"
     nanoid "^3.1.25"
     source-map-js "^0.6.2"
+
+preact@^10.4.8:
+  version "10.5.14"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.5.14.tgz#0b14a2eefba3c10a57116b90d1a65f5f00cd2701"
+  integrity sha512-KojoltCrshZ099ksUZ2OQKfbH66uquFoxHSbnwKbTJHeQNvx42EmC7wQVWNuDt6vC5s3nudRHFtKbpY4ijKlaQ==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"

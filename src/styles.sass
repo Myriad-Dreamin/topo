@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+path.flow-edge-path
+  stroke-dasharray: 20
+  stroke-dashoffset: 0
+  stroke: lightblue
+  stroke-width: 2
+  transition: all 1s linear
+  animation-name: flow-edge-ring
+  animation-duration: 60s
+  animation-timing-function: linear
+  animation-iteration-count: infinite
+
+//path.flow-edge-path
+//  stroke-dasharray: 10
+//  stroke-dashoffset: 0
+//  stroke: lightblue
+//  stroke-width: 2
+
+@keyframes flow-edge-ring
+  from
+    stroke-dashoffset: 6000
+  to
+    stroke-dashoffset: 0
+
