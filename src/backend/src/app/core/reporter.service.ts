@@ -1,6 +1,6 @@
 import {exec} from 'child_process';
 import {TimeUnit} from '@proto/timeUnit';
-import {AgendaPart, TimeBullet} from '@proto/agenda';
+import {TimeBullet, TopoNode} from '@proto/agenda';
 import {TopoAgendaAlgorithmService} from './agenda.algorithm.service';
 import {Inject, Injectable} from '@nestjs/common';
 import {convertDailyDurationToDur, convertDailyDurationToHM} from '@lib/duration';
@@ -82,13 +82,13 @@ class TopoLinuxReporter {
 }
 
 interface TopoReporterContext {
-  topo: AgendaPart[];
+  topo: TopoNode[];
   changed: boolean;
 }
 
 @Injectable()
 export class TopoReporterService implements TopoReporterContext {
-  topo: AgendaPart[] = [];
+  topo: TopoNode[] = [];
   changed = false;
   protected linuxReporter: TopoLinuxReporter;
 

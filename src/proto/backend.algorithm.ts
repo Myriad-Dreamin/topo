@@ -1,9 +1,9 @@
-import {AgendaPart, FullTimeBlock} from '@proto/agenda';
+import {FullTimeBlock, TopoNode} from '@proto/agenda';
 
 export type TopoDurationConfig = string | number;
 
 export interface TopoUserConfig {
-  intervals: (Omit<AgendaPart, 'estimated' | 'start' | 'end'> & {
+  intervals: (Omit<TopoNode, 'estimated' | 'start' | 'end'> & {
     estimated: TopoDurationConfig;
     start: TopoDurationConfig;
     end: TopoDurationConfig;
@@ -33,7 +33,7 @@ export interface TopoUserConfig {
 }
 
 export interface TopoAlgorithmParams {
-  intervals: AgendaPart[];
+  intervals: TopoNode[];
   blocks: FullTimeBlock[];
   topology: {
     workTime: number;

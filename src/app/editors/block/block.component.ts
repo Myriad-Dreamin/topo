@@ -3,7 +3,7 @@ import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams} from '@proto/backend.algorithm';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BezierEdge, BezierEdgeModel, h, LogicFlow, RectNode, RectNodeModel} from '@logicflow/core';
-import {AgendaPart, FullTimeBlock, TimeBlock, TimeBullet} from '@proto/agenda';
+import {FullTimeBlock, TimeBlock, TimeBullet, TopoNode} from '@proto/agenda';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -40,11 +40,11 @@ interface FlattenBullet {
 }
 
 interface FlattenAgendaPart {
-  part: AgendaPart;
+  part: TopoNode;
   bullets: FlattenBullet[];
 }
 
-function flattenPart(parts: AgendaPart[]): FlattenAgendaPart[] {
+function flattenPart(parts: TopoNode[]): FlattenAgendaPart[] {
   const bullets: FlattenAgendaPart[] = [];
   for (const part of parts) {
     for (const block of part.blocks) {
@@ -87,10 +87,10 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   flattenDone: FlattenBullet[] = [];
   flow: LogicFlow;
   params: {
-    intervals: AgendaPart[];
+    intervals: TopoNode[];
     blocks: FullTimeBlock[];
   }
-  todoBlocks: AgendaPart[] = [];
+  todoBlocks: TopoNode[] = [];
   doneBlocks: TimeBlock[] = [];
 
   constructor(protected httpClient: HttpClient) {
@@ -114,7 +114,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
         this.resetData();
       }
     });
-    this.httpClient.get<TopoAppGenericData<AgendaPart[]>>('http://localhost:13308/v1/app/topo').subscribe((res) => {
+    this.httpClient.get<TopoAppGenericData<TopoNode[]>>('http://localhost:13308/v1/app/topo').subscribe((res) => {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {

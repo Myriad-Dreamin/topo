@@ -1,10 +1,10 @@
-export interface AgendaScheduleProps {
+export interface TopoNodeScheduleProps {
   estimated?: number;
   percent?: number;
   maxTime?: number;
 }
 
-export interface TimeBullet extends AgendaScheduleProps {
+export interface TimeBullet extends TopoNodeScheduleProps {
   name: string;
   estimated: number;
 }
@@ -21,7 +21,7 @@ export interface TimeBlock {
   charger: TimeBullet[];
 }
 
-export interface AgendaPart {
+export interface TopoNode {
   id?: number;
   name: string;
   start: number;

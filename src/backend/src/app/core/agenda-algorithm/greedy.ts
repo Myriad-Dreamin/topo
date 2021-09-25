@@ -1,11 +1,11 @@
-import {AgendaPart, AgendaScheduleProps, FullTimeBlock, TimeBlock, TimeBullet} from '@proto/agenda';
+import {FullTimeBlock, TimeBlock, TimeBullet, TopoNode, TopoNodeScheduleProps} from '@proto/agenda';
 import {TimeUnit} from '@proto/timeUnit';
 import {TopoAlgorithmParams} from '@proto/backend.algorithm';
 
 
 type WithAgendaScheduleProps<T> = {
   value: T;
-} & AgendaScheduleProps;
+} & TopoNodeScheduleProps;
 
 class AgendaScheduler {
   public leftTime: number;
@@ -15,7 +15,7 @@ class AgendaScheduler {
     this.leftTime = totalTime;
   }
 
-  schedule(g: AgendaScheduleProps, defaultValue = 0): number {
+  schedule(g: TopoNodeScheduleProps, defaultValue = 0): number {
     let e = 0;
     if (g.percent) {
       e = this.totalTime * g.percent / 100;
@@ -96,7 +96,7 @@ function generateAgendaBlock(block: FullTimeBlock, estimateTime: number): [TimeB
   }, estimateTime];
 }
 
-function generateAgendaPart(part: AgendaPart, restTime: number, blocks: WithAgendaScheduleProps<FullTimeBlock>[]): [AgendaPart, number] {
+function generateAgendaPart(part: TopoNode, restTime: number, blocks: WithAgendaScheduleProps<FullTimeBlock>[]): [TopoNode, number] {
   const scheduler = new AgendaScheduler(restTime);
   for (const block of blocks) {
     const scheduleTime = scheduler.schedule(block, scheduler.leftTime);
@@ -116,9 +116,9 @@ function generateAgendaPart(part: AgendaPart, restTime: number, blocks: WithAgen
 }
 
 type AgendaTask = {
-  part: AgendaPart;
+  part: TopoNode;
   blocks: WithAgendaScheduleProps<FullTimeBlock>[];
-} & AgendaScheduleProps;
+} & TopoNodeScheduleProps;
 
 function generateAgendaTask(params: TopoAlgorithmParams): AgendaTask[] {
   const taskParts: AgendaTask[] = [];
@@ -126,7 +126,7 @@ function generateAgendaTask(params: TopoAlgorithmParams): AgendaTask[] {
   const taskIndices = new Map<number, AgendaTask & {
     bullets: Map<FullTimeBlock, TimeBullet[]>,
   }>();
-  const intervalIndices = new Map<number, AgendaPart>();
+  const intervalIndices = new Map<number, TopoNode>();
   const affSum = new Map<string, number>();
   const affChn = new Map<string, number>();
   let incId = 0xfff00000;
@@ -240,7 +240,7 @@ function generateAgendaTask(params: TopoAlgorithmParams): AgendaTask[] {
   return taskParts;
 }
 
-export function generateTopoAgendaGreedyImpl(params: TopoAlgorithmParams): AgendaPart[] {
+export function generateTopoAgendaGreedyImpl(params: TopoAlgorithmParams): TopoNode[] {
   const parts = [];
   const scheduler = new AgendaScheduler(params.topology.workTime);
   const taskParts = generateAgendaTask(params);

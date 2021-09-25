@@ -2,7 +2,7 @@ import {Controller, Get, Inject, Query} from '@nestjs/common';
 import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams, TopoUserConfig} from '@proto/backend.algorithm';
 import {TopoAppConfigService} from './core/app.config.service';
-import {AgendaPart} from '@proto/agenda';
+import {TopoNode} from '@proto/agenda';
 import {TopoAgendaAlgorithmService} from './core/agenda.algorithm.service';
 
 interface TodoAppPingResponse {
@@ -50,7 +50,7 @@ export class TopoAppController {
   }
 
   @Get('v1/app/topo')
-  getAgenda(@Query() params: GenerateAgendaRequest): TopoAppGenericData<AgendaPart[]> {
+  getAgenda(@Query() params: GenerateAgendaRequest): TopoAppGenericData<TopoNode[]> {
     const config = this.configService.getUserTopoConfig();
 
     return {

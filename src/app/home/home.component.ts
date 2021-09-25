@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AgendaPart, TimeBlock} from '@proto/agenda';
+import {TimeBlock, TopoNode} from '@proto/agenda';
 import {HttpClient} from '@angular/common/http';
 import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams} from '@proto/backend.algorithm';
@@ -12,7 +12,7 @@ import {convertDailyDurationToHM} from '../../lib/duration';
 })
 export class HomeComponent implements OnInit {
   title = 'todo';
-  todoBlocks: AgendaPart[] = [];
+  todoBlocks: TopoNode[] = [];
   doneBlocks: TimeBlock[] = [];
 
   constructor(protected httpClient: HttpClient) {
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.httpClient.get<TopoAppGenericData<AgendaPart[]>>('http://localhost:13308/v1/app/topo').subscribe((res) => {
+    this.httpClient.get<TopoAppGenericData<TopoNode[]>>('http://localhost:13308/v1/app/topo').subscribe((res) => {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {
