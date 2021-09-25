@@ -5,8 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-backend": "ng build",
-    "build-frontend-container": "yarn run build && docker build -f docker/Dockerfile -t angular-topo:latest .",
+    "build-container": "docker build -f docker/Dockerfile -t angular-topo:latest .",
+    "build-backend": "cd src/backend && yarn run build",
+    "build-backend-container": "cd src/backend && yarn run build-container",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  #  topo-backend:
+  #    image: topo-backend:latest
+  #    container_name: topo-backend
+  #    user: "${TOPO_USER}:${TOPO_GROUP}"
+  #    environment:
+  #      TOPO_CONFIG_DIR: /config
+  #      DBUS_SESSION_BUS_ADDRESS: ${DBUS_SESSION_BUS_ADDRESS}
+  #    ports:
+  #      - 13308:13308
+  #    volumes:
+  #      - /home/kamiyoru/.config/topo:/config
+  #      - /run/user/1000/bus:/run/user/1000/bus
+  #    restart: always
+  topo:
+    #    depends_on:
+    #      - topo-backend
+    image: angular-topo:latest
+    container_name: angular-topo
+    ports:
+      - 10102:10101
+      # admin
+      - 127.0.0.1:9102:2019
+    volumes:
+      - /home/kamiyoru/deployment/caddy/angular-topo:/data
+    restart: always

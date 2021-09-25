@@ -5,6 +5,10 @@ import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams} from '@proto/backend.algorithm';
 import {convertDailyDurationToHM} from '../../lib/duration';
 
+function getHostIp(): string {
+  return '172.17.0.1';
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -19,7 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpClient.get<TopoAppGenericData<TopoAlgorithmParams>>('http://localhost:13308/v1/app/params').subscribe((res) => {
+    this.httpClient.get<TopoAppGenericData<TopoAlgorithmParams>>(`http://${getHostIp()}:13308/v1/app/params`).subscribe((res) => {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {
@@ -27,7 +31,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.httpClient.get<TopoAppGenericData<TopoNode[]>>('http://localhost:13308/v1/app/topo').subscribe((res) => {
+    this.httpClient.get<TopoAppGenericData<TopoNode[]>>(`http://${getHostIp()}:13308/v1/app/topo`).subscribe((res) => {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {

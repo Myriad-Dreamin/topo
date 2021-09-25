@@ -73,21 +73,14 @@ const loader = require('js-yaml');
 @Injectable()
 export class TopoAppConfigService {
   config2Params!: typeof convertConfig;
-  configPath: string;
 
   constructor() {
-    this.configPath = path.resolve(homedir(), '.config/topo/topo.yaml');
+
   }
 
   getUserTopoConfig(): TopoUserConfig {
-    const configPath = this.configPath;
-
-    const hd = homedir();
-    if (!configPath.startsWith(hd)) {
-      throw new TopoAppBackendError(2, 'configPath is not under user home path');
-    }
-
-    const configDir = path.dirname(configPath);
+    const configDir = process.env['TOPO_CONFIG_DIR'] || path.resolve(homedir(), '.config/topo');
+    const configPath = path.resolve(configDir, 'topo.yaml');
     if (!fs.existsSync(configDir)) {
       fs.mkdirSync(configDir);
     }

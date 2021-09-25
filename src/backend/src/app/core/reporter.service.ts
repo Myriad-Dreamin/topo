@@ -1,12 +1,16 @@
-import {exec} from 'child_process';
 import {TimeUnit} from '@proto/timeUnit';
 import {TimeBullet, TopoNode} from '@proto/agenda';
 import {TopoAgendaAlgorithmService} from './agenda.algorithm.service';
 import {Inject, Injectable} from '@nestjs/common';
 import {convertDailyDurationToDur, convertDailyDurationToHM} from '@lib/duration';
 
+const notifier = require('node-notifier');
+
 function notifyUser(title: string, msg: string) {
-  exec(`notify-send "${title}" "${msg}"`);
+  notifier.notify({
+    title: title,
+    message: msg,
+  });
 }
 
 class DailyNotifier {

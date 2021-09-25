@@ -9,6 +9,7 @@
   "scripts": {
     "prebuild": "rimraf out-tsc",
     "build": "nest build",
+    "build-container": " docker build -f docker/Dockerfile -t topo-backend:latest .",
     "gyp-build": "node-gyp configure && node-gyp build",
     "gyp-build:debug": "node-gyp configure && make BUILDTYPE=Debug -C build",
     "gyp-build:bear": "rimraf build && node-gyp configure && bear make BUILDTYPE=Debug -C build",
@@ -71,6 +72,7 @@
     "@nestjs/platform-express": "^8.0.7",
     "js-yaml": "^4.1.0",
     "nestjs-pino": "^2.2.0",
+    "node-notifier": "^10.0.0",
     "pino": "^6.13.3",
     "pino-http": "^5.8.0"
   }

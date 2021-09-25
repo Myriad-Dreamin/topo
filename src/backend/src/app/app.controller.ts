@@ -1,4 +1,4 @@
-import {Controller, Get, Inject, Query} from '@nestjs/common';
+import {Controller, Get, HttpCode, Inject, Query} from '@nestjs/common';
 import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams, TopoUserConfig} from '@proto/backend.algorithm';
 import {TopoAppConfigService} from './core/app.config.service';
@@ -19,6 +19,12 @@ export class TopoAppController {
   constructor(
     @Inject(TopoAppConfigService) protected configService: TopoAppConfigService,
     @Inject(TopoAgendaAlgorithmService) protected algorithmService: TopoAgendaAlgorithmService) {
+  }
+
+  @HttpCode(204)
+  @Get('favicon.ico')
+  emptyFavIcon(): undefined {
+    return undefined;
   }
 
   @Get('ping')
