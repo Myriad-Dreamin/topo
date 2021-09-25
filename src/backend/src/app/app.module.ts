@@ -4,6 +4,7 @@ import {TopoAppController} from './app.controller';
 import * as pino from 'pino';
 import {Logger} from 'pino';
 import {LoggerModule} from 'nestjs-pino';
+import {TopoAppBackendCoreModule} from './core/app.module';
 
 @Module({})
 export class TopoAppBackendModule {
@@ -17,6 +18,7 @@ export class TopoAppBackendModule {
             customLogLevel: () => 'trace',
           }
         }),
+        TopoAppBackendCoreModule,
       ],
       controllers: [
         TopoAppController,
