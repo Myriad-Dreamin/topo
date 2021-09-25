@@ -102,18 +102,30 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.flattenTodo = flattenPart(this.todoBlocks);
-    this.flattenDone = flattenBlock(this.doneBlocks);
     this.httpClient.get<TopoAppGenericData<TopoAlgorithmParams>>('http://localhost:13308/v1/app/params').subscribe((res) => {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {
         this.params = res.data;
+        this.doneBlocks = res.data.blocks;
       }
-
-      this.flattenTodo = flattenPart(this.todoBlocks);
       this.flattenDone = flattenBlock(this.doneBlocks);
+      if (this.flow) {
+        this.resetData();
+      }
     });
+    this.httpClient.get<TopoAppGenericData<AgendaPart[]>>('http://localhost:13308/v1/app/topo').subscribe((res) => {
+      if (res && res.code) {
+        console.log(res.code, 'error');
+      } else {
+        this.todoBlocks = res.data;
+      }
+      this.flattenTodo = flattenPart(this.todoBlocks);
+      if (this.flow) {
+        this.resetData();
+      }
+    });
+
   }
 
   initGraphView(): void {
@@ -142,8 +154,8 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.initGraphView();
-    // this.resetData();
+    this.initGraphView();
+    this.resetData();
   }
 
   resetData() {
