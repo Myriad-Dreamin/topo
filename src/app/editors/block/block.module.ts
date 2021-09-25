@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BlockEditorComponent} from './block.component';
 import {AgendaEditBlockComponent} from './agenda-edit-block/agenda-edit-block.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import {AgendaEditBlockComponent} from './agenda-edit-block/agenda-edit-block.co
     AgendaEditBlockComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    HttpClientModule,
   ]
 })
 export class BlockEditorModule {
