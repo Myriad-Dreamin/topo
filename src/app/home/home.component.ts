@@ -1,21 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AgendaPart, FullTimeBlock, TimeBlock, TimeBullet} from '@proto/agenda';
+import {AgendaPart, TimeBlock} from '@proto/agenda';
 import {TimeUnit} from '@proto/timeUnit';
 import {HttpClient} from '@angular/common/http';
 import {TopoAppGenericData} from '@proto/backend';
 import {TopoAlgorithmParams} from '@proto/backend.algorithm';
-
-function generatePreviewBlock(block: FullTimeBlock): TimeBlock {
-  const charger: TimeBullet[] = block.charger.map(bullet => ({
-    name: bullet.name,
-    estimated: bullet.estimated || 0,
-  }));
-
-  return {
-    name: block.name,
-    charger,
-  };
-}
 
 @Component({
   selector: 'app-home',
@@ -35,11 +23,7 @@ export class HomeComponent implements OnInit {
       if (res && res.code) {
         console.log(res.code, 'error');
       } else {
-        const params = res.data;
-
-        for (const block of params.blocks) {
-          this.doneBlocks.push(generatePreviewBlock(block));
-        }
+        this.doneBlocks = res.data.blocks;
       }
     });
 
